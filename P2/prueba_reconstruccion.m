@@ -1,0 +1,10 @@
+function reconstruccion = prueba_reconstruccion(filtros, excitacion, muestras)
+    numero_muestras = size(filtros);
+    numero_muestras = numero_muestras(1);
+    replicas = 120 * ones(1, numero_muestras);
+    idx = accumarray((cumsum(replicas)+1)',ones(size(replicas))');
+    filtros_replicados = filtros(cumsum(idx(1:end-1))+1,:);
+    s_n_k = buffer([0; muestras], 10, 9);
+    s_n_k = s_n_k(:, 1:end-1);
+    reconstruccion = round(excitacion + sum(filtros_replicados' .* s_n_k)');
+    reconstruccion = buffer(reconstruccion, 120);
